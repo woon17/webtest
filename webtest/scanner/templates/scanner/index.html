@@ -3,35 +3,55 @@
 {% load static %}
 
 {% block content %}
-  <form id="fileform" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input id="myfile" type="file" name="myfile">
-    <button type="submit">Upload</button>
-  </form>
-  {% if file %}
-    <p>File Uploaded: {{ file }};</p>
-  {% endif %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+<div class="container" ><br>
+  <section class="content">
+    <div class="col-sm-5" style="float:none;margin:auto;background-color: #f5f3f3;border-radius:2%;" id="body">
+      <div  class="card">
+        <div class="card card-body" style="background-color:white;border-radius:2%;">
+          <form id="fileform" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input id="myfile" type="file" name="myfile">
+            <button type="submit" style="float: right;">Upload</button>
+          </form>
+          <br><br>
+          <p><a href="{% url 'home' %}">New Upload</a></p>
+        </div>
+      </div>
+      {% if status %}
+      <div class="card">
+        <div class="card card-body" style="background-color:white;border-radius:2%;">
+          {% if status == "completed" %}
+          {% if file %}
+          <p>File Uploaded: {{ file }};</p>
+          {% endif %}
 
-  {% if stats %}
-    {% for i, value in stats.items %}
-      <p>{{ i }} : {{ value }};</p>
-    {% endfor %}
-  {% endif %}
+          {% if stats %}
+          {% for i, value in stats.items %}
+          <p>{{ i }} : {{ value }};</p>
+          {% endfor %}
+          {% endif %}
 
-  {% if redirectUrl %}
-    <p>visualTotal: <a href="{{ redirectUrl }}">{{ redirectUrl }}</a></p>
-  {% endif %}
-
-  <p><a href="{% url 'home' %}">New Upload</a></p>
+          {% if redirectUrl %}
+          <p>visualTotal: <a href="{{ redirectUrl }}">{{ redirectUrl }}</a></p>
+          {% endif %}
+          
+          {% elif status == "queued" %}
+          <br><p>Please wait for one minute.</a></p>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+</div>
 <script>
-$('#fileform').submit(function(){
-  alert($("#myfile").val())
-  valid = true;
-  if($("#myfile").val() == ''){
-        valid =  false;
-  }
-  return valid
-});
+  $('#fileform').submit(function(){
+    valid = true;
+    if($("#myfile").val() == ''){
+      valid =  false;
+    }
+    return valid
+  });
 </script>
 {% endblock %}
-
