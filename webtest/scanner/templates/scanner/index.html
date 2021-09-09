@@ -1,0 +1,37 @@
+{% extends 'scanner/base.html' %}
+{% load scanner_extras %}
+{% load static %}
+
+{% block content %}
+  <form id="fileform" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input id="myfile" type="file" name="myfile">
+    <button type="submit">Upload</button>
+  </form>
+  {% if file %}
+    <p>File Uploaded: {{ file }};</p>
+  {% endif %}
+
+  {% if stats %}
+    {% for i, value in stats.items %}
+      <p>{{ i }} : {{ value }};</p>
+    {% endfor %}
+  {% endif %}
+
+  {% if redirectUrl %}
+    <p>visualTotal: <a href="{{ redirectUrl }}">{{ redirectUrl }}</a></p>
+  {% endif %}
+
+  <p><a href="{% url 'home' %}">New Upload</a></p>
+<script>
+$('#fileform').submit(function(){
+  alert($("#myfile").val())
+  valid = true;
+  if($("#myfile").val() == ''){
+        valid =  false;
+  }
+  return valid
+});
+</script>
+{% endblock %}
+
