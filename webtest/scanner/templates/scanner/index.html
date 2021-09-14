@@ -33,11 +33,30 @@
           {% endif %}
 
           {% if redirectUrl %}
-          <p>visualTotal: <a href="{{ redirectUrl }}">{{ redirectUrl }}</a></p>
+          <p>VirusTotal: <a href="{{ redirectUrl }}">{{ redirectUrl }}</a></p>
           {% endif %}
           
           {% elif status == "queued" %}
           <br><p>Please wait for one minute.</a></p>
+          <script>
+          var counter = 60;
+          var interval = setInterval(function() {
+              counter--;
+              // Display 'counter' wherever you want to display it.
+              if (counter <= 0) {
+                  clearInterval(interval);
+                  $('#timer').html("<h3>Count down complete</h3>");  
+                  return;
+              }else{
+                $('#time').text(counter);
+              }
+          }, 1000);
+          </script>
+          <div>
+            <span id="timer">
+              <span id="time">60</span>&nbspSeconds      
+            </span>
+          </div>
           {% endif %}
         </div>
       </div>
