@@ -7,7 +7,6 @@
 <div class="container" ><br>
   <section class="content">
     <div class="col-sm-5" style="float:none;margin:auto;background-color: #f5f3f3;border-radius:2%;" id="body">
-      <div  class="card">
         <div class="card card-body" style="background-color:white;border-radius:2%;">
           <form id="fileform" method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -17,9 +16,7 @@
           <br><br>
           <p><a href="{% url 'home' %}">New Upload</a></p>
         </div>
-      </div>
       {% if status %}
-      <div class="card">
         <div class="card card-body" style="background-color:white;border-radius:2%;">
           {% if status == "completed" %}
           {% if file %}
@@ -59,7 +56,6 @@
           </div>
           {% endif %}
         </div>
-      </div>
       {% endif %}
     </div>
   </section>
