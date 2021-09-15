@@ -40,12 +40,12 @@ def getDataService(fileName):
     '''
     fileDir = os.path.join(baseDir, "temp", fileName)
     SHA_256 = getSha256(fileDir)
-    reportObj=Report.objects.filter(hash=SHA_256)
+    reportObj=Report.objects.filter(SHA_256=SHA_256)
 
     # my own database
     if reportObj.exists():
         stats = ast.literal_eval(reportObj[0].stats)
-        redirectUrl = "https://www.virustotal.com/gui/file/" + reportObj[0].hash
+        redirectUrl = "https://www.virustotal.com/gui/file/" + reportObj[0].SHA_256
         os.remove(fileDir)
         return {'stats': stats, 
             'redirectUrl': redirectUrl, 'status': 'completed'}
@@ -58,12 +58,12 @@ def getDataService(fileName):
         redirectUrl = "https://www.virustotal.com/gui/file/" + SHA_256
 
         print(f"\nlast_analysis_stats: {stats}\n")
-        # Report.objects.create(
-        #     reportId=id,
-        #     stats=stats,
-        #     hash=SHA_256,
-        #     file=fileName
-        # )
+        Report.objects.create(
+            fileId=id,
+            stats=stats,
+            SHA_256=SHA_256,
+            fileName=fileName
+        )
         return {'stats': stats, 
             'redirectUrl': redirectUrl, 'status': 'completed'}
 
@@ -77,15 +77,15 @@ def getDataService(fileName):
     print("\n")
 
 
-    hash= resp2.json()['data']['links']['item'].split('api/v3/files/')[1]
-    redirectUrl = "https://www.virustotal.com/gui/file/" + hash
+    SHA_256= resp2.json()['data']['links']['item'].split('api/v3/files/')[1]
+    redirectUrl = "https://www.virustotal.com/gui/file/" + SHA_256
 
     if status == "completed":
         Report.objects.create(
-            reportId=id,
+            fileId=id,
             stats=stats,
-            hash=hash,
-            file=fileName
+            SHA_256=SHA_256,
+            fileName=fileName
         )
     return {'stats': stats, 
             'redirectUrl': redirectUrl, 'status': status}
