@@ -15,9 +15,14 @@ def simple_upload(request):
         # uploaded_file_url = fs.url(filename)
 
         context = {}
-        context = getDataService(filename)
-        context['file'] = filename
+        try: 
+            context = getDataService(filename)
+            context['file'] = filename
+            return render(request, 'scanner/index.html', context)
 
-        return render(request, 'scanner/index.html', context)
+        except Exception as e:
+            print(f'Exception: {e}')
+            return render(request, 'scanner/index.html')
+
 
     return render(request, 'scanner/index.html')

@@ -1,6 +1,5 @@
 import hashlib
-import os
-def sha256sum(fileDir):
+def getSha256(fileDir):
     h  = hashlib.sha256()
     b  = bytearray(128*1024)
     mv = memoryview(b)
