@@ -1,53 +1,59 @@
 {% extends 'scanner/base.html' %}
 {% load scanner_extras %}
-{% load static %}
 
 {% block content %}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
 <div class="container" ><br>
   <section class="content">
     <div class="col-sm-5" style="float:none;margin:auto;background-color: #f5f3f3;border-radius:2%;" id="body">
-        <div class="card card-body" style="background-color:white;border-radius:2%;">
-          <form id="fileform" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input id="myfile" type="file" name="myfile">
-            <button type="submit" style="float: right;">Upload</button>
-          </form>
-          <br><br>
-          <p><a href="{% url 'home' %}">New Upload</a></p>
-        </div>
+      <div class="card card-body" style="background-color:white;border-radius:2%;">
+        <form id="fileform" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input id="myfile" type="file" name="myfile">
+          <button type="submit" style="float: right;">Upload</button>
+        </form>
+        <br><br>
+        <p><a href="{% url 'home' %}">New Upload</a></p>
+      </div>
       {% if status %}
-        <div class="card card-body" style="background-color:white;border-radius:2%;">
-          {% if status == "completed" %}
-          {% if file %}
-          <p>File Uploaded: {{ file }};</p>
-          {% endif %}
+      <div class="card card-body" style="background-color:white;border-radius:2%;">
+          <table class="table">
+            {% if status == "completed" %}
+            {% if file %}
+            <p>File Uploaded: {{ file }}</p>
+            <tbody">
 
-          {% if stats %}
-          {% for i, value in stats.items %}
-          <p>{{ i }} : {{ value }};</p>
-          {% endfor %}
-          {% endif %}
+              {% endif %}
 
-          {% if redirectUrl %}
-          <p>VirusTotal: <a href="{{ redirectUrl }}">{{ redirectUrl }}</a></p>
-          {% endif %}
-          
-          {% elif status == "queued" %}
-          <br><p>Please wait for one minute.</a></p>
-          <script>
+              {% if stats %}
+              {% for i, value in stats.items %}
+              <tr>
+                <th>{{ i }}:</th>
+                <td style="text-align:right;">{{ value }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+        {% if redirectUrl %}
+        <p><a href="{{ redirectUrl }}">VirusTotal report</a></p>
+        {% endif %}
+        
+        {% elif status == "queued" %}
+        <br><p>Please wait for one minute.</a></p>
+        <script>
           var counter = 60;
           var interval = setInterval(function() {
-              counter--;
+            counter--;
               // Display 'counter' wherever you want to display it.
               if (counter <= 0) {
-                  clearInterval(interval);
-                  $('#timer').html("<h3>Count down complete</h3>");  
-                  return;
+                clearInterval(interval);
+                $('#timer').html("<h3>Count down complete</h3>");  
+                return;
               }else{
                 $('#time').text(counter);
               }
-          }, 1000);
+            }, 1000);
           </script>
           <div>
             <span id="timer">
@@ -56,17 +62,17 @@
           </div>
           {% endif %}
         </div>
-      {% endif %}
-    </div>
-  </section>
-</div>
-<script>
-  $('#fileform').submit(function(){
-    valid = true;
-    if($("#myfile").val() == ''){
-      valid =  false;
-    }
-    return valid
-  });
-</script>
-{% endblock %}
+        {% endif %}
+      </div>
+    </section>
+  </div>
+  <script>
+    $('#fileform').submit(function(){
+      valid = true;
+      if($("#myfile").val() == ''){
+        valid =  false;
+      }
+      return valid
+    });
+  </script>
+  {% endblock %}
