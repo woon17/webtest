@@ -10,9 +10,9 @@
         <form id="fileform" method="post" enctype="multipart/form-data">
           {% csrf_token %}
           <input id="myfile" type="file" name="myfile">
-          <button type="submit" style="float: right;">Upload</button>
+          <button type="submit" class="search" name ="analysis" value="upload" style="float: right;">Upload</button><br><br>
+          <button type="submit" class="search" name ="analysis" value="rescan" style="float: right;">re-scan</button>
         </form>
-        <br><br>
         <p><a href="{% url 'home' %}">New Upload</a></p>
       </div>
       {% if status %}

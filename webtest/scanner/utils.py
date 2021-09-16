@@ -1,4 +1,6 @@
 import hashlib
+import os
+from webtest.settings import BASE_DIR as baseDir
 
 def getSha256(fileDir):
     h  = hashlib.sha256()
@@ -9,3 +11,7 @@ def getSha256(fileDir):
             h.update(mv[:n])
     return h.hexdigest()
 
+def clearFile(fileName):
+    filePath = os.path.join(baseDir, "temp", fileName)
+    if os.path.exists(filePath):
+        os.remove(filePath)
